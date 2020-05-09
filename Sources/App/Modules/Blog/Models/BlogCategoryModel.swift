@@ -20,3 +20,19 @@ final class BlogCategoryModel: Model {
         self.title = title
     }
 }
+
+
+extension BlogCategoryModel {
+    
+    struct ViewContext: Encodable {
+        var id: String
+        var title: String
+        
+        init(model: BlogCategoryModel) {
+            self.id = model.id!.uuidString
+            self.title = model.title
+        }
+    }
+    
+    var viewContext: ViewContext { .init(model: self) }
+}
