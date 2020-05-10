@@ -1,4 +1,4 @@
-#extend("index"): #export("body"):
+#extend("Frontend/Index"): #export("body"):
 <section id="blog" class="wrapper">
 <img src="#(item.post.image)"> <h2>#(item.post.title) (#(item.post.date))</h2> <p>#(item.post.excerpt)</p>
 <p class="category">#(item.post.category)</p> <p>#(item.post.content)</p>
