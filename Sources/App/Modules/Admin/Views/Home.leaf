@@ -1,0 +1,15 @@
+#extend("Admin/Index"):
+    #export("body"):
+        <div class="wrapper">
+            <h2>Posts</h2>
+                <a href="/admin/blog/posts/new">Create</a>
+        </div>
+        <section class="wrapper">
+            <h2>#(header)</h2>
+        </section>
+        <section class="wrapper">
+            <p>#(message)</p>
+            <a href="/admin/blog/posts">Blog posts</a>
+        </section>
+    #endexport
+#endextend

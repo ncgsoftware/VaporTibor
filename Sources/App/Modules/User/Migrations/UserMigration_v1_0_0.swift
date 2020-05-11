@@ -5,7 +5,7 @@ struct UserMigration_v1_0_0: Migration {
 
     private func users() -> [UserModel] {
         [
-            UserModel(email: "mail.tib@gmail.com",
+            UserModel(email: "ncgsoftware@gmail.com",
                       password: try! Bcrypt.hash("ChangeMe1"))
         ]
     }
