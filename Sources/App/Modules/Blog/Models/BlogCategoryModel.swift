@@ -22,7 +22,8 @@ final class BlogCategoryModel: Model {
 }
 
 
-extension BlogCategoryModel {
+extension BlogCategoryModel: ViewContextRepresentable {
+    var viewIdentifier: String { self.id!.uuidString }
     
     struct ViewContext: Encodable {
         var id: String
@@ -42,3 +43,5 @@ extension BlogCategoryModel: FormFieldOptionRepresentable {
         .init(key: self.id!.uuidString, label: self.title)
     }
 }
+
+

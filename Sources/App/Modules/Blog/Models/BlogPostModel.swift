@@ -50,7 +50,8 @@ final class BlogPostModel: Model {
     }
 }
 
-extension BlogPostModel {
+extension BlogPostModel: ViewContextRepresentable {
+    var viewIdentifier: String { self.id!.uuidString }
 
     struct ViewContext: Encodable {
         var id: String

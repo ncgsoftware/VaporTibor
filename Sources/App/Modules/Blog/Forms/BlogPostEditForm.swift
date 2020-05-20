@@ -1,6 +1,7 @@
 import Vapor
 
-final class BlogPostEditForm: Encodable {
+final class BlogPostEditForm: Form {
+    typealias Model = BlogPostModel
     
     struct Input: Decodable {
         var id: String
@@ -48,7 +49,7 @@ final class BlogPostEditForm: Encodable {
             }
     }
     
-    func read(from model: BlogPostModel) {
+    func read(from model: Model) {
         self.id = model.id!.uuidString
         self.title.value = model.title
         self.slug.value = model.slug
@@ -59,7 +60,7 @@ final class BlogPostEditForm: Encodable {
         self.image.value = model.image
     }
     
-    func write(to model: BlogPostModel) {
+    func write(to model: Model) {
         model.title = self.title.value
         model.slug = self.slug.value
         model.excerpt = self.excerpt.value
