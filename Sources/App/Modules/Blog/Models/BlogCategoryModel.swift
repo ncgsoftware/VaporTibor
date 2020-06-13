@@ -59,20 +59,7 @@ extension BlogCategoryModel: ListContentRepresentable {
     var listContent: ListItem { .init(model: self) }
 }
 
-extension BlogCategoryModel: GetContentRepresentable {
-    
-    struct GetContent: Content {
-        var id: String
-        var title: String
-        
-        init(model: BlogCategoryModel) {
-            self.id = model.id!.uuidString
-            self.title = model.title
-        }
-    }
-    
-    var getContent: GetContent { .init(model: self)}
-}
+
 
 extension BlogCategoryModel: CreateContentRepresentable {
 
@@ -121,4 +108,19 @@ extension BlogCategoryModel: PatchContentRepresentable {
 
 extension BlogCategoryModel: DeleteContentRepresentable {
     
+}
+
+extension BlogCategoryModel: GetContentRepresentable {
+    struct GetContent: Content {
+        var id: String
+        var title: String
+        var posts: [BlogPostModel.ListItem]?
+        
+        init(model: BlogCategoryModel){
+            self.id = model.id!.uuidString
+            self.title = model.title
+        }
+    }
+    
+    var getContent: GetContent { .init(model: self) }
 }
