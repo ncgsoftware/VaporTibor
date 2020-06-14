@@ -8,9 +8,12 @@ struct UtilityCommandGroup: CommandGroup {
     var defaultCommand: AnyCommand? {
         self.commands[UtilityFileTransferCommand.name]
     }
+    var databaseCommand: AnyCommand? {
+        self.commands[UtilityDatabaseTransferCommand.name]
+    }
     
     init() {
         self.help = "Various utility tools"
-        self.commands = [UtilityFileTransferCommand.name: UtilityFileTransferCommand(), ]
+        self.commands = [UtilityFileTransferCommand.name: UtilityFileTransferCommand(), UtilityDatabaseTransferCommand.name: UtilityDatabaseTransferCommand()]
     }
 }

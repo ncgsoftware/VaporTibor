@@ -74,6 +74,7 @@ struct BlogMigration_v1_0_0: Migration {
                 .unique(on: BlogPostModel.FieldKeys.slug)
                 .create(),
         ])
+            /*
         .flatMap {
             let defaultCategory = BlogCategoryModel(title: "Uncategorized")
             let islandsCategory = BlogCategoryModel(title: "Islands")
@@ -83,7 +84,7 @@ struct BlogMigration_v1_0_0: Migration {
                             self.islandPosts(for: islandsCategory)
                 return posts.create(on: database)
             }
-        }
+        } */
     }
 
     func revert(on database: Database) -> EventLoopFuture<Void> {

@@ -4,10 +4,14 @@ import Fluent
 import FluentSQLiteDriver
 import Liquid
 import LiquidLocalDriver
+import FluentPostgresDriver
+
 
 public func configure(_ app: Application) throws {
 
-    app.databases.use(.sqlite(.file("db.sqlite")), as: .sqlite)
+    //app.databases.use(.sqlite(.file("db.sqlite")), as: .sqlite)
+    try app.databases.use(.postgres(url: Environment.pgUrl), as: .psql)
+    
     
     app.middleware.use(FileMiddleware(publicDirectory: app.directory.publicDirectory))
     
@@ -41,4 +45,8 @@ public func configure(_ app: Application) throws {
     for module in modules {
         try module.configure(app)
     }
+}
+
+extension Environment {
+    static let pgUrl = URL(string: Self.get("PSQL_CRED")!)!
 }
