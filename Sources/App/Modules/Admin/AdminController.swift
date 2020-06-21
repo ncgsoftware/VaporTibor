@@ -1,4 +1,5 @@
 import Vapor
+import ContentApi
 
 struct AdminController {
     

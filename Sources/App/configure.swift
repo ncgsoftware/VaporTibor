@@ -1,15 +1,16 @@
 import Vapor
 import Leaf
 import Fluent
-import FluentSQLiteDriver
+//import FluentSQLiteDriver
 import Liquid
 import LiquidLocalDriver
+//import LiquidAwsS3Driver
 import FluentPostgresDriver
-
+import ViperKit
+import ViewKit
 
 public func configure(_ app: Application) throws {
 
-    //app.databases.use(.sqlite(.file("db.sqlite")), as: .sqlite)
     try app.databases.use(.postgres(url: Environment.pgUrl), as: .psql)
     
     
@@ -17,24 +18,29 @@ public func configure(_ app: Application) throws {
     
     app.routes.defaultMaxBodySize = "10mb"
     app.fileStorages.use(.local(
-        publicUrl: "http://localhost:8080",
+        publicUrl: Environment.appUrl.absoluteString,
         publicPath: app.directory.publicDirectory,
         workDirectory: "assets"), as: .local)
 
-    app.views.use(.leaf)
-    app.leaf.cache.isEnabled = app.environment.isRelease
+    /* AWS S# Bucket file storage config
+    app.fileStorages.use(awsS3(key: Environment.awsKey,
+                               secret: Environment.awsSecret,
+                               bucket: "vaportestbucket",
+                               region: .uswest1), as: .awsS3)
+    */
     
-    let workingDirectory = app.directory.workingDirectory
-    app.leaf.configuration.rootDirectory = "/"
-    app.leaf.files = ModularViewFiles(workingDirectory: workingDirectory, fileio: app.fileio)
-
+    app.views.use(.leaf)
+    if !app.environment.isRelease {
+        app.leaf.cache.isEnabled = false
+        app.leaf.useViperViews()
+    }
     
     app.sessions.use(.fluent)
     app.migrations.add(SessionRecord.migration)
     app.middleware.use(app.sessions.middleware)
     
     
-    let modules: [Module] = [
+    let modules: [ViperModule] = [
         FrontendModule(),
         AdminModule(),
         BlogModule(),
@@ -42,11 +48,31 @@ public func configure(_ app: Application) throws {
         UtilityModule(),
     ]
     
-    for module in modules {
-        try module.configure(app)
-    }
+    try app.viper.use(modules)
 }
 
 extension Environment {
     static let pgUrl = URL(string: Self.get("PSQL_CRED")!)!
+    static let appUrl = URL(string: Self.get("APP_URL")!)!
+    static let awsKey = Self.get("AWS_KEY")!
+    static let awsSecret = Self.get("AWS_SECRET")!
+}
+
+protocol ViperAdminViewController: AdminViewController where Model: ViperModel {
+    associatedtype Module: ViperModule
+}
+
+extension ViperAdminViewController {
+    
+    var listView: String {
+        "\(Module.name.capitalized)/Admin/\(Model.name.capitalized)/List"
+    }
+    
+    var editView: String {
+        "\(Module.name.capitalized)/Admin/\(Model.name.capitalized)/Edit"
+    }
+}
+
+extension Fluent.Model where IDValue == UUID {
+    var viewIdentifier: String { self.id!.uuidString }
 }

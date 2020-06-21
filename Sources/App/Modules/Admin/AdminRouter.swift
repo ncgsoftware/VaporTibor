@@ -1,6 +1,7 @@
 import Vapor
+import ViperKit
 
-struct AdminRouter: RouteCollection {
+struct AdminRouter: ViperRouter {
     let controller = AdminController()
     
     func boot(routes: RoutesBuilder) throws {

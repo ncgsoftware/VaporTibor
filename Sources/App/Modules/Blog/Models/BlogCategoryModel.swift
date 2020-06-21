@@ -1,7 +1,14 @@
 import Vapor
 import Fluent
+import ViewKit
+import ContentApi
+import ViperKit
 
-final class BlogCategoryModel: Model {
+final class BlogCategoryModel: ViperModel {
+    static var name: String = "categories"
+    
+    
+    typealias Module = BlogModule
     
     static let schema = "blog_categories"
     
@@ -23,7 +30,6 @@ final class BlogCategoryModel: Model {
 
 
 extension BlogCategoryModel: ViewContextRepresentable {
-    var viewIdentifier: String { self.id!.uuidString }
     
     struct ViewContext: Encodable {
         var id: String

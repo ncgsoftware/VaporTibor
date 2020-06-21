@@ -1,11 +1,13 @@
 import Vapor
+import ViperKit
 
-struct BlogRouter : RouteCollection {
+
+struct BlogRouter : ViperRouter {
     let frontendController = BlogFrontEndController()
     let postAdminController = BlogPostAdminController()
     let categoryAdminController = BlogCategoryAdminController()
     
-    func boot(routes: RoutesBuilder) throws {
+    func boot(routes: RoutesBuilder, app: Application) throws {
         routes.get("blog", use: self.frontendController.blogView)
         routes.get(.anything, use: self.frontendController.postView)
         
@@ -17,6 +19,7 @@ struct BlogRouter : RouteCollection {
         ])
         
         let blog = protected.grouped("admin", "blog")
+        
         
         self.postAdminController.setupRoutes(routes: blog, on: "posts")
         self.categoryAdminController.setupRoutes(routes: blog, on: "categories")

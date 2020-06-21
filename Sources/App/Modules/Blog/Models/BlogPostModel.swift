@@ -1,7 +1,13 @@
 import Vapor
 import Fluent
+import ViewKit
+import ContentApi
+import ViperKit
 
-final class BlogPostModel: Model {
+final class BlogPostModel: ViperModel {
+    static var name: String = "posts"
+    
+    typealias Module = BlogModule
     
     static let schema: String = "blog_posts"
 
@@ -51,7 +57,6 @@ final class BlogPostModel: Model {
 }
 
 extension BlogPostModel: ViewContextRepresentable {
-    var viewIdentifier: String { self.id!.uuidString }
 
     struct ViewContext: Encodable {
         var id: String
