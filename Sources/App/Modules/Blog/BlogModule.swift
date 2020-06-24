@@ -12,6 +12,7 @@ struct BlogModule: ViperModule {
     
     var migrations: [Migration] {
         [BlogMigration_v1_0_0(),
-        BlogMigration_v1_1_0(),]
+        BlogMigration_v1_1_0(),
+        BlogMigrationSeed(),]
     }
 }

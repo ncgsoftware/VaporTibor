@@ -109,6 +109,7 @@ extension BlogPostModel: ApiRepresentable {
         var excerpt: String
         var date: Date
         var content: String
+        var categoryId: String
     }
     
     struct PatchContent: ValidatableContent {
@@ -131,7 +132,7 @@ extension BlogPostModel: ApiRepresentable {
     private func upsert(_ content: UpsertContent) throws {
         self.title = content.title
         self.slug = content.slug
-        self.image = content.slug
+        self.image = content.image
         self.excerpt = content.excerpt
         self.date = content.date
         self.content = content.content
