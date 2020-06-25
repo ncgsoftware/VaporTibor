@@ -11,7 +11,14 @@ import ViewKit
 
 public func configure(_ app: Application) throws {
 
-    try app.databases.use(.postgres(url: Environment.pgUrl), as: .psql)
+    //try app.databases.use(.postgres(url: Environment.pgUrl), as: .psql)
+    let configuration = PostgresConfiguration(hostname: Environment.dbHost,
+                                              port: 5432,
+                                              username: Environment.dbUser,
+                                              password: Environment.dbPass,
+                                              database: Environment.dbName)
+    
+    app.databases.use(.postgres(configuration: configuration), as: .psql)
     
     
     app.middleware.use(FileMiddleware(publicDirectory: app.directory.publicDirectory))
@@ -49,10 +56,18 @@ public func configure(_ app: Application) throws {
     ]
     
     try app.viper.use(modules)
+    
+    try app.autoMigrate().wait()
 }
 
 extension Environment {
-    static let pgUrl = URL(string: Self.get("PSQL_CRED")!)!
+    static let dbHost = Self.get("DB_HOST")!
+    static let dbUser = Self.get("DB_USER")!
+    static let dbPass = Self.get("DB_PASS")!
+    static let dbName = Self.get("DB_NAME")!
+    
+    
+    //static let pgUrl = URL(string: Self.get("PSQL_CRED")!)!
     static let appUrl = URL(string: Self.get("APP_URL")!)!
     static let awsKey = Self.get("AWS_KEY")!
     static let awsSecret = Self.get("AWS_SECRET")!

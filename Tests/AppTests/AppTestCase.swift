@@ -24,6 +24,11 @@ open class AppTestCase: XCTestCase {
         try configure(app)
         app.databases.use(.sqlite(.memory), as: .sqlite)
         app.databases.default(to: .sqlite)
+        
+        app.fileStorages.use(.local(publicUrl: "http://localhost:8080",
+                                    publicPath: app.directory.publicDirectory,
+                                    workDirectory: "assets"), as: .local)
+        
         try app.autoMigrate().wait()
         return app
     }

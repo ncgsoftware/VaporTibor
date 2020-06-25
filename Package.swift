@@ -28,9 +28,7 @@ let package = Package(
                 .product(name: "Vapor", package: "vapor"),
                 .product(name: "Leaf", package: "leaf"),
                 .product(name: "Fluent", package: "fluent"),
-                .product(name: "FluentSQLiteDriver", package: "fluent-sqlite-driver"),
                 .product(name: "Liquid", package: "liquid"),
-                .product(name: "LiquidLocalDriver", package: "liquid-local-driver"),
                 .product(name: "LiquidAwsS3Driver", package: "liquid-aws-s3-driver"),
                 .product(name: "FluentPostgresDriver", package: "fluent-postgres-driver"),
                 .product(name: "ViewKit", package: "view-kit"),
@@ -47,6 +45,8 @@ let package = Package(
         .target(name: "Run", dependencies: [.target(name: "App")]),
         .testTarget(name: "AppTests", dependencies: [
             .target(name: "App"),
+            .product(name: "LiquidLocalDriver", package: "liquid-local-driver"),
+            .product(name: "FluentSQLiteDriver", package: "fluent-sqlite-driver"),
             .product(name: "Spec", package: "spec"),
             .product(name: "XCTVapor", package: "vapor"),
         ])
